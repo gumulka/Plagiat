@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/commons-lang3-3.4.jar"/>
 	<classpathentry kind="lib" path="lib/java-getopt-1.0.14.jar"/>
 	<classpathentry kind="lib" path="lib/simmetrics-core-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/guava-19.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

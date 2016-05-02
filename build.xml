@@ -18,6 +18,7 @@
             <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/commons-lang3-3.4.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/java-getopt-1.0.14.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/simmetrics-core-3.0.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/guava-19.0.jar"/>
         </jar>
     </target>
 </project>

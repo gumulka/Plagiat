@@ -29,7 +29,7 @@ public class ContentExtractor {
 	private static final String[] name = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 
 	public static void printStatistics() {
-		System.out.println("Downloaded " + extracted.size() + " URL's");
+		System.out.println("Downloaded " + ID + " URL's");
 		int i = 0;
 		double temp = pdfSize;
 		while (temp > 1024) {
