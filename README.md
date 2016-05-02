@@ -40,8 +40,6 @@ Googles blocks you out if you make to much request to it per day. This is at abo
 
 The download volume is quite high. It should only be used with a flatrate.
 
-The memory demand is quite high. To not download sources twice, every text is held in memory. - This might change in future versions.
-
 The results are quite unnice to read. Improvements in formatting are not my priority.
 
 Possible languages are only german and english.

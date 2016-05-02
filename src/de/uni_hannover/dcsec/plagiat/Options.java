@@ -15,6 +15,7 @@ public class Options {
 	private static boolean google;
 	private static boolean metager;
 	private static int debuglevel;
+	private static boolean reduceMemory;
 
 	private static boolean helpPrinted = false;
 
@@ -42,6 +43,12 @@ public class Options {
 		System.out.println("     Translate the text into [language] and check this language to.");
 		System.out.println("  -f  --file=[file]");
 		System.out.println("     The file to check.");
+		System.out.println("  -r  --reduceMemory");
+		System.out.println("     Reduce memory usage.");
+	}
+
+	public static boolean isReduceMemory() {
+		return reduceMemory;
 	}
 
 	public static void parse(String[] argv) {
@@ -53,9 +60,10 @@ public class Options {
 		google = false;
 		metager = false;
 		debuglevel = 0;
+		reduceMemory = false;
 		int c;
 		String arg;
-		LongOpt[] longopts = new LongOpt[9];
+		LongOpt[] longopts = new LongOpt[10];
 		longopts[0] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
 		longopts[1] = new LongOpt("begin", LongOpt.REQUIRED_ARGUMENT, null, 'b');
 		longopts[2] = new LongOpt("end", LongOpt.REQUIRED_ARGUMENT, null, 'e');
@@ -65,11 +73,15 @@ public class Options {
 		longopts[6] = new LongOpt("google", LongOpt.NO_ARGUMENT, null, 'g');
 		longopts[7] = new LongOpt("metager", LongOpt.NO_ARGUMENT, null, 'm');
 		longopts[8] = new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v');
-		Getopt g = new Getopt("plagiat", argv, "hb:e:s:t:f:gmv", longopts);
+		longopts[9] = new LongOpt("reduceMemory", LongOpt.NO_ARGUMENT, null, 'r');
+		Getopt g = new Getopt("plagiat", argv, "hb:e:s:t:f:gmvr", longopts);
 		g.setOpterr(false); // We'll do our own error handling
 
 		while ((c = g.getopt()) != -1)
 			switch (c) {
+			case 'r':
+				reduceMemory = true;
+				break;
 			case 'v':
 				debuglevel++;
 				break;

@@ -67,7 +67,7 @@ public class ContentExtractor {
 			ret = getPDFContent(url);
 		else
 			ret = getHTMLContent(url);
-		if (ret != null)
+		if (ret != null && !Options.isReduceMemory())
 			extracted.put(url, ret);
 		return ret;
 	}
