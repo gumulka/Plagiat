@@ -33,7 +33,7 @@ public class GoogleSearch {
 					ret.add(s);
 			}
 		} catch (Exception e) {
-			if(Options.getDebuglevel()>0)
+			if (Options.getDebuglevel() > 0)
 				e.printStackTrace();
 		}
 		return ret;

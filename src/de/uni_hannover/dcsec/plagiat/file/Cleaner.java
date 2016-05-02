@@ -10,7 +10,7 @@ public class Cleaner {
 
 	public static Vector<String> toSentence(String text) {
 		Locale l = Options.getFrom();
-		if(l==null)
+		if (l == null)
 			return toSentence(text, Locale.ENGLISH);
 		else
 			return toSentence(text, l);

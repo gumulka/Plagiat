@@ -88,12 +88,12 @@ public class Result {
 	}
 
 	public float checkSelf() {
-		if(original.length()<30)
+		if (original.length() < 30)
 			return 0;
 		float origin = checkSelf(false);
-		if(Options.getFrom()!=null && Options.getTo() != null){
+		if (Options.getFrom() != null && Options.getTo() != null) {
 			float x = checkSelf(true);
-			if(x>origin)
+			if (x > origin)
 				origin = x;
 		}
 		return origin;

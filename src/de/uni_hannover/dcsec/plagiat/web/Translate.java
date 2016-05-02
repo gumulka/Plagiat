@@ -11,27 +11,27 @@ import de.uni_hannover.dcsec.plagiat.Options;
 public class Translate {
 
 	public static String getTranslation(String original) {
-		if(Options.getFrom()==Options.getTo())
+		if (Options.getFrom() == Options.getTo())
 			return null;
-		if(Options.getFrom()==Locale.GERMAN)
+		if (Options.getFrom() == Locale.GERMAN)
 			return getTranslation(original, "german");
-		else if(Options.getFrom()==Locale.ENGLISH)
+		else if (Options.getFrom() == Locale.ENGLISH)
 			return getTranslation(original, "english");
 		else
 			return null;
 	}
 
 	public static String getTranslation(String original, String originLanguage) {
-		if(Options.getTo()==Locale.ENGLISH)
+		if (Options.getTo() == Locale.ENGLISH)
 			return getTranslation(original, originLanguage, "english");
-		else if(Options.getTo()==Locale.GERMAN)
+		else if (Options.getTo() == Locale.GERMAN)
 			return getTranslation(original, originLanguage, "german");
 		else
 			return null;
 	}
 
 	public static String getTranslation(String original, String originLanguage, String targetLanguage) {
-		if(Options.getDebuglevel()>1)
+		if (Options.getDebuglevel() > 1)
 			System.out.println("Translating: " + original);
 		try {
 			Document doc = Jsoup

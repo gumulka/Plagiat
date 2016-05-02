@@ -20,11 +20,11 @@ public class WebSearch {
 		}
 		if (next.length() == 0)
 			return result;
-		if(Options.isGoogle())
+		if (Options.isGoogle())
 			result.addAll(GoogleSearch.search(next));
-		if(Options.isMetager())
+		if (Options.isMetager())
 			result.addAll(MetaGer.search(next));
 		return result;
 	}
-	
+
 }

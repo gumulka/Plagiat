@@ -56,12 +56,12 @@ public class ContentExtractor {
 		// keep track of all visited sites to not download results twice.
 		Source ret = extracted.get(url);
 		if (ret != null) {
-			if(Options.getDebuglevel()>1)
+			if (Options.getDebuglevel() > 1)
 				System.out.println("Resending " + url);
 			return ret;
 		}
 		ret = null;
-		if(Options.getDebuglevel()>1)
+		if (Options.getDebuglevel() > 1)
 			System.out.println("Fetching " + url);
 		if (url.toLowerCase().endsWith("pdf"))
 			ret = getPDFContent(url);
@@ -107,7 +107,7 @@ public class ContentExtractor {
 		} catch (org.jsoup.UnsupportedMimeTypeException mte) {
 			if (mte.getMimeType().startsWith("application/pdf"))
 				return getPDFContent(url);
-			if(Options.getDebuglevel()>0)
+			if (Options.getDebuglevel() > 0)
 				System.err.println("Not a web page. It is " + mte.getMimeType());
 			return null;
 		} catch (Exception e) {
