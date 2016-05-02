@@ -4,8 +4,23 @@ import java.util.Vector;
 
 import de.uni_hannover.dcsec.plagiat.Options;
 
+/**
+ * Generic Class for Web searching. Calls Google or MetaGer
+ * 
+ * @see GoogleSearch
+ * @see MetaGer
+ * @author pflug
+ *
+ */
 public class WebSearch {
 
+	/**
+	 * Searches for a String using different search engines.
+	 * 
+	 * @param text
+	 *            The search string.
+	 * @return Vector with links to results.
+	 */
 	public static Vector<String> search(String text) {
 		Vector<String> result = new Vector<String>();
 		String[] all = text.split(" ");

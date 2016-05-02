@@ -18,18 +18,32 @@ import de.uni_hannover.dcsec.plagiat.Source;
 import de.uni_hannover.dcsec.plagiat.file.Cleaner;
 import de.uni_hannover.dcsec.plagiat.file.PDFReader;
 
+/**
+ * Downloads and extracts content from a given URL.
+ */
 public class ContentExtractor {
 
+	/**
+	 * Map of all downladed URL's and the corresponding parsed texts.
+	 */
 	private static Map<String, Source> extracted = new HashMap<String, Source>();
-	private static Map<Integer, String> IDs = new HashMap<Integer, String>();
-	private static int ID = 0;
+	/**
+	 * Vector of all visited URLs.
+	 */
+	private static Vector<String> IDs = new Vector<String>();
 
+	/**
+	 * Counter for how many bytes have been downloaded by the program.
+	 */
 	private static double pdfSize = 0, webSize = 0;
 
 	private static final String[] name = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 
+	/**
+	 * Prints out statistics about how much has been downloaded.
+	 */
 	public static void printStatistics() {
-		System.out.println("Downloaded " + ID + " URL's");
+		System.out.println("Downloaded " + IDs.size() + " URL's");
 		int i = 0;
 		double temp = pdfSize;
 		while (temp > 1024) {
@@ -46,12 +60,30 @@ public class ContentExtractor {
 		System.out.printf("Web: %6.2f %s\n", temp, name[i]);
 	}
 
+	/**
+	 * Returns the URL to a given ID.
+	 * 
+	 * Since it is more memory efficient to store an integer instead of a
+	 * String. Every Sentence of a source only stores an ID for its source URL
+	 * and not the complete URL. This process can be reverted using this method.
+	 * 
+	 * @param id
+	 *            the ID of a URL
+	 * @return The corresponding URL.
+	 */
 	public static String getURL(int id) {
-		if (id == -1)
+		if (id == -1 || id > IDs.size())
 			return null;
 		return IDs.get(id);
 	}
 
+	/**
+	 * Downloads an URL and parses the content into a Source for comparing.
+	 * 
+	 * @param url
+	 *            The URL to download.
+	 * @return The content of the URL as concatenated sources.
+	 */
 	public static Source getContent(String url) {
 		// keep track of all visited sites to not download results twice.
 		Source ret = extracted.get(url);
@@ -122,6 +154,8 @@ public class ContentExtractor {
 			return null;
 		Source prev = null;
 		Source first = null;
+		int ID = IDs.size();
+		IDs.add(url);
 		for (String c : vec) {
 			Source s = new Source(c, ID);
 			s.setPrevious(prev);
@@ -131,7 +165,6 @@ public class ContentExtractor {
 				first = s;
 			prev = s;
 		}
-		IDs.put(ID++, url);
 		return first;
 	}
 }

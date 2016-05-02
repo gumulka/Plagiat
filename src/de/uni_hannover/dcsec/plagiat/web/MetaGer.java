@@ -9,8 +9,22 @@ import org.jsoup.nodes.Element;
 
 import de.uni_hannover.dcsec.plagiat.Options;
 
+/**
+ * Class for making use of the MetaGer search engine.
+ * 
+ * @author pflug
+ *
+ */
 public class MetaGer {
 
+	/**
+	 * Searches for a String on MetaGer and parses the results from the first
+	 * page. The links are returned.
+	 * 
+	 * @param text
+	 *            The search string.
+	 * @return Vector with links to results.
+	 */
 	public static Vector<String> search(String text) {
 		Document doc = null;
 		Vector<String> ret = new Vector<String>();

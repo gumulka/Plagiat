@@ -8,8 +8,21 @@ import org.jsoup.nodes.Element;
 
 import de.uni_hannover.dcsec.plagiat.Options;
 
+/**
+ * Class for translating sentences using web services.
+ * 
+ * @author pflug
+ *
+ */
 public class Translate {
 
+	/**
+	 * Translates a sentence into another language define by the options class.
+	 * 
+	 * @param original
+	 *            The original sentence
+	 * @return The translation.
+	 */
 	public static String getTranslation(String original) {
 		if (Options.getFrom() == Options.getTo())
 			return null;
@@ -21,7 +34,7 @@ public class Translate {
 			return null;
 	}
 
-	public static String getTranslation(String original, String originLanguage) {
+	private static String getTranslation(String original, String originLanguage) {
 		if (Options.getTo() == Locale.ENGLISH)
 			return getTranslation(original, originLanguage, "english");
 		else if (Options.getTo() == Locale.GERMAN)
@@ -30,6 +43,17 @@ public class Translate {
 			return null;
 	}
 
+	/**
+	 * Translates a sentence into another language define by the options class.
+	 * 
+	 * @param original
+	 *            The original sentence
+	 * @param originLanguage
+	 *            The language of the source sentence
+	 * @param targetLanguage
+	 *            The language to translate into.
+	 * @return The translation.
+	 */
 	public static String getTranslation(String original, String originLanguage, String targetLanguage) {
 		if (Options.getDebuglevel() > 1)
 			System.out.println("Translating: " + original);

@@ -6,20 +6,64 @@ import java.util.Locale;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
+/**
+ * Class for global options which can be send via the command line. It also
+ * handles the parsing of the command line options.
+ * 
+ * @author pflug
+ *
+ */
 public class Options {
+	/**
+	 * First page to parse from the source PDF.
+	 */
 	private static int startpage;
+	/**
+	 * Last page to parse from the source PDF. 0 for all pages.
+	 */
 	private static int endpage;
+	/**
+	 * Link to the file to be read and checked for duplicates.
+	 */
 	private static File pdfFile;
+	/**
+	 * The language of the source file.
+	 */
 	private static Locale from;
+	/**
+	 * The language in which the file should be translated and checked against.
+	 */
 	private static Locale to;
+	/**
+	 * Variable to indicate whether to use Google or not.
+	 */
 	private static boolean google;
+	/**
+	 * Variable to indicate whether to use MetaGer or not.
+	 */
 	private static boolean metager;
+	/**
+	 * Level for debug messages.
+	 */
 	private static int debuglevel;
+	/**
+	 * Variable to indicate whether to reduce memory. When set. URL's might be
+	 * visited more often and downloaded and parsed every time.
+	 */
 	private static boolean reduceMemory;
 
+	/**
+	 * Variable which shows if the help message has been printed yet.
+	 */
 	private static boolean helpPrinted = false;
 
+	/**
+	 * A help message with all options is printed out to System.out
+	 * 
+	 */
 	public static void printHelp() {
+		if (helpPrinted)
+			return;
 		helpPrinted = true;
 		System.out.println("Usage: ");
 		System.out.println("java -jar plagiat.jar [Options] pdf-File");
@@ -47,10 +91,13 @@ public class Options {
 		System.out.println("     Reduce memory usage.");
 	}
 
-	public static boolean isReduceMemory() {
-		return reduceMemory;
-	}
-
+	/**
+	 * Resets all values to default values and parses the command line options
+	 * into arguments.
+	 * 
+	 * @param argv
+	 *            Command line Options.
+	 */
 	public static void parse(String[] argv) {
 		startpage = 1;
 		endpage = 0;
@@ -144,31 +191,18 @@ public class Options {
 			pdfFile = new File(argv[i]);
 			if (!pdfFile.canRead()) {
 				System.err.println("Could not parse option: " + argv[i]);
+				printHelp();
 				pdfFile = null;
 			}
 		}
 	}
 
-	public static int getStartpage() {
-		return startpage;
-	}
-
-	public static int getEndpage() {
-		return endpage;
-	}
-
-	public static File getPdfFile() {
-		return pdfFile;
-	}
-
-	public static Locale getFrom() {
-		return from;
-	}
-
-	public static Locale getTo() {
-		return to;
-	}
-
+	/**
+	 * Checks if the given command line options are sane and the input file can
+	 * be read.
+	 * 
+	 * @return true if everything is fine, false otherwise.
+	 */
 	public static boolean isSane() {
 		if (to != null && from == null) {
 			System.err.println("Translation does not work if no source language is specified.");
@@ -196,6 +230,26 @@ public class Options {
 		return true;
 	}
 
+	public static int getStartpage() {
+		return startpage;
+	}
+
+	public static int getEndpage() {
+		return endpage;
+	}
+
+	public static File getPdfFile() {
+		return pdfFile;
+	}
+
+	public static Locale getFrom() {
+		return from;
+	}
+
+	public static Locale getTo() {
+		return to;
+	}
+
 	public static boolean isGoogle() {
 		return google;
 	}
@@ -210,6 +264,10 @@ public class Options {
 
 	public static boolean isHelpPrinted() {
 		return helpPrinted;
+	}
+
+	public static boolean isReduceMemory() {
+		return reduceMemory;
 	}
 
 }

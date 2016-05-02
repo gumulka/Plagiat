@@ -6,8 +6,21 @@ import java.util.Vector;
 
 import de.uni_hannover.dcsec.plagiat.Options;
 
+/**
+ * Class to clean a string from unnecessary garbage and page numbers.
+ * 
+ * @author pflug
+ *
+ */
 public class Cleaner {
 
+	/**
+	 * Splits a text into sentences.
+	 * 
+	 * @param text
+	 *            The text to split.
+	 * @return Text splitted into sentences.
+	 */
 	public static Vector<String> toSentence(String text) {
 		Locale l = Options.getFrom();
 		if (l == null)
@@ -16,6 +29,15 @@ public class Cleaner {
 			return toSentence(text, l);
 	}
 
+	/**
+	 * Splits a text into sentences.
+	 * 
+	 * @param text
+	 *            The text to split.
+	 * @param local
+	 *            The local for the source file.
+	 * @return Text splitted into sentences.
+	 */
 	public static Vector<String> toSentence(String text, Locale local) {
 		if (text == null || text == "")
 			return new Vector<String>();
@@ -29,6 +51,13 @@ public class Cleaner {
 		return ret;
 	}
 
+	/**
+	 * Cleans the text from all line breaks and tries to remove Headers.
+	 * 
+	 * @param text
+	 *            Source text.
+	 * @return Source text without line Breaks.
+	 */
 	public static String clean(String text) {
 		if (text == null)
 			return null;

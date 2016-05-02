@@ -9,18 +9,62 @@ import de.uni_hannover.dcsec.plagiat.web.ContentExtractor;
 import de.uni_hannover.dcsec.plagiat.web.Translate;
 import de.uni_hannover.dcsec.plagiat.web.WebSearch;
 
+/**
+ * A class for a single sentence of the source file and the corresponding
+ * sentences.
+ * 
+ * @author pflug
+ *
+ */
 public class Result {
 
+	/**
+	 * Previous and next sentence.
+	 */
 	private Result previous, next;
-	private String original, translate;
+	/**
+	 * The sentence
+	 */
+	private String original;
+	/**
+	 * Translation of the original sentence.
+	 */
+	private String translate;
+	/**
+	 * Possible sources for the original.
+	 */
 	private Vector<Source> possibilities;
+	/**
+	 * The source with the best match.
+	 */
 	private Source source;
+	/**
+	 * Indicator how high the match is. Higher is better.
+	 */
 	private float indicator;
+	/**
+	 * Metric for comparing the sentences.
+	 */
 	private static StringMetric metric = StringMetrics.cosineSimilarity();
 
+	/**
+	 * Maximum number of neighboring sentences in the source to check if one is
+	 * a match.
+	 */
 	private static final int MAXFAILMATCH = 10;
+
+	/**
+	 * Maximum number of neighboring sentences in the target to check if one is
+	 * a match.
+	 */
 	private static final int MAXFAILSENTENCE = 20;
 
+	/**
+	 * Initialises all parameters.
+	 * 
+	 * @param s
+	 *            the source sentence
+	 */
 	public Result(String s) {
 		original = s;
 		possibilities = new Vector<Source>();
@@ -31,14 +75,30 @@ public class Result {
 		translate = null;
 	}
 
-	public Source getSource() {
-		return source;
-	}
-
+	/**
+	 * checks the sentence against a given Source.
+	 * 
+	 * @param s
+	 *            the Source to check against.
+	 * @param trans
+	 *            If the translation of the original has to be checked against.
+	 * @return indicator on how high the similarity is.
+	 */
 	public float checkAgainst(Source s, boolean trans) {
 		return checkAgainst(s, Integer.MAX_VALUE, trans);
 	}
 
+	/**
+	 * checks the sentence against a given Source.
+	 * 
+	 * @param s
+	 *            the Source to check against.
+	 * @param counter
+	 *            The number of neighboring sentences in the source to check.
+	 * @param trans
+	 *            If the translation of the original has to be checked against.
+	 * @return indicator on how high the similarity is.
+	 */
 	public float checkAgainst(Source s, int counter, boolean trans) {
 		String checking;
 		if (trans) {
@@ -87,6 +147,11 @@ public class Result {
 		return indicator;
 	}
 
+	/**
+	 * Check itself against online sources.
+	 * 
+	 * @return the indicator on how high the similarity to the best match is.
+	 */
 	public float checkSelf() {
 		if (original.length() < 30)
 			return 0;
@@ -99,6 +164,14 @@ public class Result {
 		return origin;
 	}
 
+	/**
+	 * Check itself against online sources.
+	 * 
+	 * @param trans
+	 *            If to also translate the sentence and check the translation
+	 *            to.
+	 * @return the indicator on how high the similarity to the best match is.
+	 */
 	public float checkSelf(boolean trans) {
 		String check;
 		if (trans) {
@@ -186,6 +259,10 @@ public class Result {
 
 	public void setNext(Result next) {
 		this.next = next;
+	}
+
+	public Source getSource() {
+		return source;
 	}
 
 }

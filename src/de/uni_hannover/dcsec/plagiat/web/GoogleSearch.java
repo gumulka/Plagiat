@@ -11,10 +11,27 @@ import org.jsoup.nodes.Element;
 
 import de.uni_hannover.dcsec.plagiat.Options;
 
+/**
+ * Class for making use of the Google search engine.
+ * 
+ * @author pflug
+ *
+ */
 public class GoogleSearch {
 
+	/**
+	 * Temporary storage of the cookies set by google.
+	 */
 	private static Map<String, String> cookies = null;
 
+	/**
+	 * Searches for a String on Google and parses the results from the first
+	 * page. The links are returned.
+	 * 
+	 * @param text
+	 *            The search string.
+	 * @return Vector with links to results.
+	 */
 	public static Vector<String> search(String text) {
 		Document doc = null;
 		Vector<String> ret = new Vector<String>();
@@ -39,6 +56,13 @@ public class GoogleSearch {
 		return ret;
 	}
 
+	/**
+	 * Cleans google URL from unnecessary garbage.
+	 * 
+	 * @param url
+	 *            A garbage URL
+	 * @return cleaned version of the given URL.
+	 */
 	private static String cleanURL(String url) {
 		if (url.startsWith("/url?q="))
 			url = url.substring(7);

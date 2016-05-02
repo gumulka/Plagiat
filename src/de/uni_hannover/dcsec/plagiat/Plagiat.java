@@ -13,11 +13,16 @@ import de.uni_hannover.dcsec.plagiat.file.PDFReader;
 import de.uni_hannover.dcsec.plagiat.web.ContentExtractor;
 
 /**
+ * The main class of the project.
+ * 
  * @author pflug
  *
  */
 public class Plagiat {
 
+	/**
+	 * Variable to indicate whether the process has been killed or not.
+	 */
 	private static boolean run = true;
 
 	/**
