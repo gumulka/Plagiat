@@ -78,6 +78,7 @@ public class Plagiat {
 
 				OutHTML out = new OutHTML(Options.getPdfFile() + ".html");
 				out.write(veryFirst);
+				out.close();
 			}
 		});
 

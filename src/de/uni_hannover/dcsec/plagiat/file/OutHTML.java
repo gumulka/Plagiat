@@ -11,24 +11,67 @@ import de.uni_hannover.dcsec.plagiat.Result;
 import de.uni_hannover.dcsec.plagiat.Source;
 import de.uni_hannover.dcsec.plagiat.web.ContentExtractor;
 
+/**
+ * Class to write out the results of the search into a HTML file.
+ * 
+ * @author pflug
+ *
+ */
 public class OutHTML {
 
-	private File f;
+	/**
+	 * Buffered writer to the HTML file.
+	 */
+	private BufferedWriter bw;
 
+	/**
+	 * Writer to the HTML file.
+	 */
+	private FileWriter fw;
+
+	/**
+	 * Creates a new instance to write data to.
+	 * 
+	 * @param filename
+	 *            The name of the file to write out the data to.
+	 */
 	public OutHTML(String filename) {
-		f = new File(filename);
+		File f = new File(filename);
+		try {
+			fw = new FileWriter(f);
+			bw = new BufferedWriter(fw);
+			bw.write("<html><body><table border=\"1\">");
+			bw.newLine();
+		} catch (IOException e) {
+			System.err.println("Could not write to HTML file.");
+			bw = null;
+			e.printStackTrace();
+		}
 	}
 
-	private void writeHeader(BufferedWriter bw) throws IOException {
-		bw.write("<html><body><table border=\"1\">");
-		bw.newLine();
-
+	/**
+	 * Writes ending tags and closes the file. Further write are not possible
+	 * any more. Multiple calls to close have no effect.
+	 */
+	public void close() {
+		if (bw != null) {
+			try {
+				bw.write("</table></body></html>");
+				bw.newLine();
+				bw.close();
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			bw = null;
+		}
 	}
 
-	private void writeFooter(BufferedWriter bw) throws IOException {
-		bw.write("</table></body></html>");
-		bw.newLine();
-
+	/**
+	 * @see close()
+	 */
+	public void finalize() {
+		close();
 	}
 
 	private void writeEntry(BufferedWriter bw, String original, String source, float percentage, String url)
@@ -54,11 +97,19 @@ public class OutHTML {
 		bw.newLine();
 	}
 
+	/**
+	 * Writes the result of the search into a file. Successive matches are
+	 * grouped together.
+	 * 
+	 * @param result
+	 *            The first Result to write out.
+	 */
 	public void write(Result result) {
+		if (bw == null) {
+			return;
+		}
+
 		try {
-			FileWriter fw = new FileWriter(f);
-			BufferedWriter bw = new BufferedWriter(fw);
-			writeHeader(bw);
 			String original = "", source = "";
 			float percentage = 0;
 			int lastSourceID = -1;
@@ -91,9 +142,6 @@ public class OutHTML {
 			if (number == 0)
 				number = 1;
 			writeEntry(bw, original, source, percentage / number, ContentExtractor.getURL(lastSourceID));
-			writeFooter(bw);
-			bw.close();
-			fw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
