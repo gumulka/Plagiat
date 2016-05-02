@@ -82,10 +82,6 @@ public class Options {
 			case 'f':
 				arg = g.getOptarg();
 				pdfFile = new File(arg);
-				if (!pdfFile.canRead()) {
-					System.err.println("Could not read file: " + arg);
-					pdfFile = null;
-				}
 				break;
 			case 'b':
 				arg = g.getOptarg();
@@ -162,12 +158,30 @@ public class Options {
 	}
 
 	public static boolean isSane() {
+		if (to != null && from == null) {
+			System.err.println("Translation does not work if no source language is specified.");
+			printHelp();
+			return false;
+		}
+		if (pdfFile != null) {
+			if (!pdfFile.canRead()) {
+				System.err.println("Could not read file: " + pdfFile);
+				pdfFile = null;
+				return false;
+			}
+		} else {
+			System.err.println("No PDF defined.");
+			printHelp();
+			return false;
+		}
+		if (helpPrinted)
+			return false;
 		if (!(google || metager)) {
 			System.err.println("No search engine defined");
 			printHelp();
 			return false;
 		}
-		return (!helpPrinted);
+		return true;
 	}
 
 	public static boolean isGoogle() {
