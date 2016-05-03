@@ -48,6 +48,8 @@ public class GoogleSearch {
 				s = cleanURL(s);
 				if (s != null)
 					ret.add(s);
+				if (ret.size() >= Options.getMaxlinks())
+					return ret;
 			}
 		} catch (Exception e) {
 			if (Options.getDebuglevel() > 0)

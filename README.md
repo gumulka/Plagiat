@@ -26,6 +26,12 @@ java -jar plagiat.jar [Options] pdf-File
      Translate the text into [language] and check this language to.
   -f  --file=[file]
      The file to check.
+  -r  --reduceMemory
+     Reduce memory usage.
+  -l  --maxLinks=[number]
+     Visit maximal [number] links per search result. [default=100]
+  -o  --outFile=[file]
+     file for printing out the result. [default=result.html]
 ```
 
 

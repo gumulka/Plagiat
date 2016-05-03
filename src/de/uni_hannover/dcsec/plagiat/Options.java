@@ -51,6 +51,14 @@ public class Options {
 	 * visited more often and downloaded and parsed every time.
 	 */
 	private static boolean reduceMemory;
+	/**
+	 * The maximal number of links to follow per search.
+	 */
+	private static int maxlinks;
+	/**
+	 * The filename for printing out the results,
+	 */
+	private static String outFile;
 
 	/**
 	 * Variable which shows if the help message has been printed yet.
@@ -89,6 +97,10 @@ public class Options {
 		System.out.println("     The file to check.");
 		System.out.println("  -r  --reduceMemory");
 		System.out.println("     Reduce memory usage.");
+		System.out.println("  -l  --maxLinks=[number]");
+		System.out.println("     Visit maximal [number] links per search result. [default=100]");
+		System.out.println("  -o  --outFile=[file]");
+		System.out.println("     file for printing out the result. [default=result.html]");
 	}
 
 	/**
@@ -108,9 +120,11 @@ public class Options {
 		metager = false;
 		debuglevel = 0;
 		reduceMemory = false;
+		maxlinks = 100;
+		outFile = "result.html";
 		int c;
 		String arg;
-		LongOpt[] longopts = new LongOpt[10];
+		LongOpt[] longopts = new LongOpt[12];
 		longopts[0] = new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h');
 		longopts[1] = new LongOpt("begin", LongOpt.REQUIRED_ARGUMENT, null, 'b');
 		longopts[2] = new LongOpt("end", LongOpt.REQUIRED_ARGUMENT, null, 'e');
@@ -121,11 +135,24 @@ public class Options {
 		longopts[7] = new LongOpt("metager", LongOpt.NO_ARGUMENT, null, 'm');
 		longopts[8] = new LongOpt("verbose", LongOpt.NO_ARGUMENT, null, 'v');
 		longopts[9] = new LongOpt("reduceMemory", LongOpt.NO_ARGUMENT, null, 'r');
-		Getopt g = new Getopt("plagiat", argv, "hb:e:s:t:f:gmvr", longopts);
+		longopts[10] = new LongOpt("maxLinks", LongOpt.REQUIRED_ARGUMENT, null, 'l');
+		longopts[11] = new LongOpt("outFile", LongOpt.REQUIRED_ARGUMENT, null, 'o');
+		Getopt g = new Getopt("plagiat", argv, "hb:e:s:t:f:gmvrl:o:", longopts);
 		g.setOpterr(false); // We'll do our own error handling
 
 		while ((c = g.getopt()) != -1)
 			switch (c) {
+			case 'o':
+				outFile = g.getOptarg();
+				break;
+			case 'l':
+				arg = g.getOptarg();
+				try {
+					maxlinks = Integer.parseInt(arg);
+				} catch (Exception e) {
+					System.err.println(arg + " is not a number!");
+				}
+				break;
 			case 'r':
 				reduceMemory = true;
 				break;
@@ -212,12 +239,16 @@ public class Options {
 		if (pdfFile != null) {
 			if (!pdfFile.canRead()) {
 				System.err.println("Could not read file: " + pdfFile);
-				pdfFile = null;
 				return false;
 			}
 		} else {
 			System.err.println("No PDF defined.");
 			printHelp();
+			return false;
+		}
+		File f = new File(outFile);
+		if (!f.canWrite()) {
+			System.err.println("Could not write to file: " + pdfFile);
 			return false;
 		}
 		if (helpPrinted)
@@ -268,6 +299,14 @@ public class Options {
 
 	public static boolean isReduceMemory() {
 		return reduceMemory;
+	}
+
+	public static int getMaxlinks() {
+		return maxlinks;
+	}
+
+	public static String getOutFile() {
+		return outFile;
 	}
 
 }

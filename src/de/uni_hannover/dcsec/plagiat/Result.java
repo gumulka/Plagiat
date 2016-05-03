@@ -183,7 +183,6 @@ public class Result {
 			check = translate;
 		} else
 			check = original;
-		int i = 0;
 		if (indicator > 0.6)
 			return indicator;
 		System.out.println("Doing self check for: " + check);
@@ -195,9 +194,6 @@ public class Result {
 				if (indicator > 0.9)
 					break;
 			}
-			// TODO delete this break!
-			if (++i > 5)
-				break;
 		}
 		if (indicator > 0.5) {
 			if (previous != null) {

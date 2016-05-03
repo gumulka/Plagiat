@@ -81,7 +81,7 @@ public class Plagiat {
 				System.out.println("Shutdown hook ran!");
 				run = false;
 
-				OutHTML out = new OutHTML(Options.getPdfFile() + ".html");
+				OutHTML out = new OutHTML(Options.getOutFile());
 				out.write(veryFirst);
 				out.close();
 			}

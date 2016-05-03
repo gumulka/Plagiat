@@ -39,6 +39,8 @@ public class MetaGer {
 				String s = e.select("a[class=title]").first().attr("href");
 				if (s != null)
 					ret.add(s);
+				if (ret.size() >= Options.getMaxlinks())
+					return ret;
 			}
 			if (ret.size() < 5) {
 				con.data("focus", "web");
@@ -47,6 +49,8 @@ public class MetaGer {
 					String s = e.select("a[class=title]").first().attr("href");
 					if (s != null)
 						ret.add(s);
+					if (ret.size() >= Options.getMaxlinks())
+						return ret;
 				}
 			}
 		} catch (Exception e) {
