@@ -6,7 +6,28 @@
     <property name="dir.buildfile" value="."/>
     <property name="dir.workspace" value="${dir.buildfile}/.."/>
     <property name="dir.jarfile" value="${dir.buildfile}"/>
-    <target name="create_run_jar">
+
+    <presetdef name="javac">
+        <javac includeantruntime="false" />
+    </presetdef>
+
+    <property name="lib.dir"     value="lib"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <target name="compile">
+        <mkdir dir="${dir.jarfile}/bin"/>
+        <javac srcdir="src" destdir="${dir.jarfile}/bin" classpathref="classpath"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${dir.jarfile}/bin"/>
+        <delete file="${dir.jarfile}/plagiat.jar" />
+    </target>
+
+    <target name="create_run_jar" depends="compile">
         <jar destfile="${dir.jarfile}/plagiat.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="de.uni_hannover.dcsec.plagiat.Plagiat"/>
