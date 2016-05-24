@@ -1,6 +1,7 @@
 package de.uni_hannover.dcsec.plagiat;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 import gnu.getopt.Getopt;
@@ -247,9 +248,21 @@ public class Options {
 			return false;
 		}
 		File f = new File(outFile);
-		if (!f.canWrite()) {
-			System.err.println("Could not write to file: " + pdfFile);
-			return false;
+		if(f.exists()) {
+			if (!f.canWrite()) {
+				System.err.println("Could not write to file: " + outFile);
+				return false;
+			}
+		} else {
+			try {
+				if(!f.createNewFile()) {
+					System.err.println("Could not create file: " + outFile);
+					return false;
+				}
+			} catch (IOException e) {
+				System.err.println("Could not create file: " + outFile);
+				return false;
+			}
 		}
 		if (helpPrinted)
 			return false;
