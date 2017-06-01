@@ -248,7 +248,7 @@ public class Options {
 		}
 		File f = new File(outFile);
 		if (!f.canWrite()) {
-			System.err.println("Could not write to file: " + pdfFile);
+			System.err.println("Could not write to file: " + outFile);
 			return false;
 		}
 		if (helpPrinted)
