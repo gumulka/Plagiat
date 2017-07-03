@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.Vector;
 
 import de.uni_hannover.dcsec.plagiat.Options;
+import de.uni_hannover.dcsec.plagiat.Page;
+import de.uni_hannover.dcsec.plagiat.Sentence;
 
 /**
  * Class to clean a string from unnecessary garbage and page numbers.
@@ -13,6 +15,42 @@ import de.uni_hannover.dcsec.plagiat.Options;
  *
  */
 public class Cleaner {
+
+	public static void clean(Vector<Page> pages) {
+		int numPages = pages.size();
+		for(int i = 0; i<numPages;i++) {
+			Page p = pages.get(i);
+			p.hideLinesShorterThan(20);
+			p.hideLabels();
+			p.hideFootnotes();
+			if(i+1<numPages)
+				p.hideHeaderAndFooter(pages.get(i+1));
+			if(i+2<numPages)
+				p.hideHeaderAndFooter(pages.get(i+2));
+		}
+	}
+
+	public static Vector<Sentence> toSentences(Vector<Page> pages, Locale local) {
+		Vector<Sentence> sentences = new Vector<Sentence>();
+		String lastPart = "";
+		BreakIterator iterator = BreakIterator.getSentenceInstance(local);
+		for(Page p : pages) {
+			boolean newpage=true;
+			String text = lastPart + p.getCleanedText();
+			iterator.setText(text);
+			int start = iterator.first();
+			for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next()) {
+				if(newpage) {
+					newpage = false;
+				} else {
+					sentences.add(new Sentence(lastPart, p));
+				}
+				lastPart = text.substring(start, end);
+			}
+		}
+		//TODO the last sentence of the document is missing.
+		return sentences;
+	}
 
 	/**
 	 * Splits a text into sentences.

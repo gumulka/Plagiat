@@ -5,6 +5,7 @@ package de.uni_hannover.dcsec.plagiat;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 
 import de.uni_hannover.dcsec.plagiat.file.Cleaner;
@@ -44,13 +45,32 @@ public class Plagiat {
 			return;
 		}
 
-		String text = PDFReader.getText(f, Options.getStartpage(), Options.getEndpage());
+		PDFReader pdfReader = null;
 
-		if (text == null) {
+		try {
+			pdfReader = new PDFReader(f, Options.getStartpage(), Options.getEndpage());
+		} catch (Exception e) {
 			System.err.println("Could not read PDF " + Options.getPdfFile());
-			return;
+			e.printStackTrace();
+			return ;
 		}
 
+
+		Cleaner.clean(pdfReader.getPages());
+
+		for (Page p :pdfReader.getPages()) {
+			System.out.println(p);
+		} // */
+
+		System.out.println("----------------");
+
+		Vector<Sentence> sentences = Cleaner.toSentences(pdfReader.getPages(), Locale.GERMAN);
+
+		for(Sentence s : sentences) {
+			System.out.println("---" + s);
+		}
+
+		/*
 		// Create the original text.
 		text = Cleaner.clean(text);
 		Vector<String> sentences = Cleaner.toSentence(text);
@@ -93,9 +113,9 @@ public class Plagiat {
 		}
 
 		ContentExtractor.printStatistics();
+		// */
 		System.out.println("Runtime: " + (new Date().getTime() - start) / 1000 + " seconds");
 
-		// */
 	}
 
 }
