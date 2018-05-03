@@ -39,14 +39,25 @@ public class Cleaner {
 			String text = lastPart + p.getCleanedText();
 			iterator.setText(text);
 			int start = iterator.first();
-			for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next()) {
-				if(newpage) {
-					newpage = false;
-				} else {
-					sentences.add(new Sentence(lastPart, p));
-				}
-				lastPart = text.substring(start, end);
+
+			int in = iterator.next();
+			int nl = text.indexOf('\n',start+1);
+			int end = -1;
+			if(in!=BreakIterator.DONE && in <nl)
+				end = in;
+			else
+				end = nl;
+			if(newpage) {
+				newpage = false;
+			} else {
+				sentences.add(new Sentence(lastPart, p));
 			}
+			lastPart = text.substring(start, end);
+			start = end;
+			if(end==in) {
+				in = iterator.next();
+			}
+		}
 		}
 		//TODO the last sentence of the document is missing.
 		return sentences;
@@ -96,53 +107,5 @@ public class Cleaner {
 	 *            Source text.
 	 * @return Source text without line Breaks.
 	 */
-	public static String clean(String text) {
-		if (text == null)
-			return null;
-		return removeLineBreaks(removeHeaders(text));
-	}
-
-	private static String removeLineBreaks(String text) {
-		String[] splittet = text.split("\n");
-		String ret = "";
-		for (String s : splittet) {
-			if (s.endsWith("-")) {
-				ret += s.substring(0, s.length() - 1);
-			} else
-				ret += s + " ";
-		}
-		return ret;
-	}
-
-	private static String removeHeaders(String text) {
-		String[] splittet = text.split("\n");
-		String ret = "";
-		for (String s : splittet) {
-			try {
-				String b = s;
-				if (b.contains(" "))
-					b = b.substring(0, b.indexOf(' '));
-				if (s.contains("."))
-					b = b.substring(0, b.indexOf('.'));
-				Integer.parseInt(b);
-			} catch (Exception e) {
-				ret += s + "\n";
-			}
-		}
-		return ret;
-	}
-
-	private static String removePageNumbers(String text) {
-		String[] splittet = text.split("\n");
-		String ret = "";
-		for (String s : splittet) {
-			try {
-				Integer.parseInt(s);
-			} catch (Exception e) {
-				ret += s + "\n";
-			}
-		}
-		return ret;
-	}
 
 }
